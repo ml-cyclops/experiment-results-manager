@@ -3,3 +3,5 @@
 .pytest_cache/
 .ruff_cache/
 .mypy_cache/
+scratch/
+*/__pycache__/

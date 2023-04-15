@@ -11,13 +11,19 @@ repos:
         types: [ python ]
         language: system
 
+      - id: isort
+        name: isort
+        entry: poetry run isort
+        types: [ python ]
+        language: system
+
       - id: pytest
         name: pytest
         entry: poetry run pytest
         language: system
         types: [ python ]
         files: ^tests\/.*test_.*\.py$
-        pass_filenames: false  # or use with: require_serial
+        pass_filenames: false
 
       - id: mypy
         name: mypy
