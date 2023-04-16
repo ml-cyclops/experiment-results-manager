@@ -5,3 +5,4 @@
 .mypy_cache/
 scratch/
 */__pycache__/
+*/.ipynb_checkpoints/
