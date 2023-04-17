@@ -6,11 +6,20 @@ from plotly.offline import get_plotlyjs
 
 from experiment_results_manager.artifact import ArtifactType
 from experiment_results_manager.experiment_run import ExperimentRun
-from experiment_results_manager.render_html import dicts_to_html_table
+from experiment_results_manager.html_util import (
+    dicts_to_html_table,
+    timestamps_to_html_table,
+)
 
 
-def compare_runs(*runs: ExperimentRun) -> str:
+def display_runs(*runs: ExperimentRun) -> str:
     html = ""
+    html += timestamps_to_html_table(
+        [er.experiment_id for er in runs],
+        [er.variant_id for er in runs],
+        [er.run_id for er in runs],
+        [er.timestamp_utc for er in runs],
+    )
     html += "<h2>Params</h2>"
     html += dicts_to_html_table([er.params for er in runs])
     html += "<h2>Metrics</h2>"

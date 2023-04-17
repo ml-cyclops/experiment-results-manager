@@ -1,19 +1,47 @@
 import os
-from typing import Dict, Optional
+from datetime import datetime
+from typing import Any, Dict, Optional
 
 import matplotlib.axes
 import matplotlib.figure
 import plotly
 
 from experiment_results_manager.artifact import Artifact, ArtifactType
-from experiment_results_manager.render_html import matplotlib_fig_to_bytes
+from experiment_results_manager.html_util import matplotlib_fig_to_bytes
 
 
 class ExperimentRun:
-    def __init__(self) -> None:
+    timestamp_utc: datetime
+    experiment_id: str
+    variant_id: str
+    run_id: str
+    params: Dict[str, str | int | float]
+    metrics: Dict[str, str | int | float]
+    dicts: Dict[str, Dict[str, str | int | float]]
+    artifacts: Dict[str, Artifact]
+
+    def __init__(
+        self,
+        experiment_id: str,
+        variant_id: str = "main",
+        run_id: Optional[str] = None,
+        timestamp_utc: Optional[datetime] = None,
+    ) -> None:
+        if timestamp_utc is None:
+            self.timestamp_utc = datetime.utcnow()
+        else:
+            self.timestamp_utc = timestamp_utc
+
+        if run_id is None:
+            self.run_id = self.timestamp_utc.strftime("%Y_%m_%d__%H_%M_%S")
+        else:
+            self.run_id = run_id
+
+        self.variant_id = variant_id
+        self.experiment_id = experiment_id
         self.params: Dict[str, str | int | float] = {}
         self.metrics: Dict[str, str | int | float] = {}
-        self.dicts: Dict[str, Dict[str, str | int | float]] = {}
+        self.dicts: Dict[str, Dict[str, Any]] = {}
         self.artifacts: Dict[str, Artifact] = {}
 
     def log_param(self, key: str, value: str | int | float) -> None:
@@ -35,13 +63,13 @@ class ExperimentRun:
                 raise ValueError(
                     "filename must be provided when src_path_or_bytes is a byte array"
                 )
-            artifact = Artifact(artifact_id, filename, src_path_or_bytes, artifact_type)
+            artifact = Artifact(artifact_id, filename, artifact_type, src_path_or_bytes)
         else:
             # Read the file and create an artifact from its contents
             with open(src_path_or_bytes, "rb") as f:
                 data = f.read()
             filename = os.path.basename(src_path_or_bytes)
-            artifact = Artifact(artifact_id, filename, data, artifact_type)
+            artifact = Artifact(artifact_id, filename, artifact_type, data)
 
         self.artifacts[artifact_id] = artifact
 

@@ -1,4 +1,5 @@
 import io
+from datetime import datetime
 from typing import Any, Dict, List, Set
 
 import matplotlib.axes
@@ -28,6 +29,25 @@ def dicts_to_html_table(data: List[Dict[str, Any]], model_name: str = "") -> str
     # Close the table
     html += "</table>"
 
+    return html
+
+
+def timestamps_to_html_table(
+    experiment_ids: List[str],
+    variant_ids: List[str],
+    run_ids: List[str],
+    timestamps: List[datetime],
+) -> str:
+    html = (
+        "<table><tr><th></th><th>Experiment id</th><th>Variant id</th>"
+        "<th>Run id</th><th>Timestamp (UTC)</th></tr>"
+    )
+    for i, experiment_id in enumerate(experiment_ids):
+        html += (
+            f"<tr><td>{i+1}</td><td>{experiment_id}</td><td>{variant_ids[i]}</td>"
+            f"<td>{run_ids[i]}</td><td>{timestamps[i]}</td></tr>"
+        )
+    html += "</table>"
     return html
 
 
