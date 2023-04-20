@@ -1,0 +1,38 @@
+---
+minimum_pre_commit_version: 1.21.0
+fail_fast: false
+default_stages: [ commit, push ]
+repos:
+  - repo: local
+    hooks:
+      - id: black
+        name: black
+        entry: poetry run black
+        types: [ python ]
+        language: system
+
+      - id: isort
+        name: isort
+        entry: poetry run isort
+        types: [ python ]
+        language: system
+
+      - id: pytest
+        name: pytest
+        entry: poetry run pytest tests
+        language: system
+        types: [ python ]
+        pass_filenames: false
+
+      - id: mypy
+        name: mypy
+        entry: poetry run mypy --strict experiment_results_manager
+        types: [ python ]
+        language: system
+        pass_filenames: false
+
+      - id: ruff
+        name: ruff
+        entry: poetry run ruff check
+        types: [ python ]
+        language: system

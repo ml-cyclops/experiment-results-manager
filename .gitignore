@@ -1,0 +1,9 @@
+.venv
+.vscode
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+scratch/
+*/__pycache__/
+*/.ipynb_checkpoints/
+dist/

@@ -1,0 +1,7 @@
+site_name: ERM - Experiment Results Manager
+theme: 
+  name: material
+
+plugins:
+- search
+- mkdocstrings
