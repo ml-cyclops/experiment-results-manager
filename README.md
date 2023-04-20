@@ -4,7 +4,7 @@
 
 ```sh
 
-pip install https://github.com/ml-cyclops/experiment-results-manager.git \
+pip install experiment-results-manager \
   gcsfs \
   s3fs
 # install s3fs if you plan to store data in s3
