@@ -52,6 +52,3 @@ display(HTML(html))
 saved_path = erm.save_run_to_registry(er, "s3:///erm-registry")
 
 ```
-
-## Screenshots
-<img width="680" alt="image" src="https://user-images.githubusercontent.com/1297369/233116615-dd85a795-4b73-4be9-bced-42ebad5ea164.png">
