@@ -1,7 +1,19 @@
 # ERM: Experiment Results Manager
 
-## Get Started
+Light-weight alternative to `mlflow` experiment tracking that doesn't require kubernetes. Useful tool to compare metrics between training attempts in your model training workflow
 
+### Features
+
+- Track plots, metrics, & other data
+- Experiment registry (supports S3, GCS, Azure and others via fsspec)
+- Comparison view 
+
+## Examples
+- Quick and easy: [serialize_and_deserialize.ipynb](examples/serialize_and_deserialize.ipynb)
+- Practical but more involved: [compare_runs.ipynb](examples/compare_runs.ipynb)
+
+## Get Started
+### Installation
 ```sh
 
 pip install experiment-results-manager \
@@ -11,14 +23,9 @@ pip install experiment-results-manager \
 # install gcsfs if you plan to store data in google cloud storage
 ```
 
+### Basic Usage:
 ```python
 import experiment_results_manager as erm
-from IPython.display import display, HTML
-import seaborn as sns
-
-# Creating arbitrary plot to log later
-tips = sns.load_dataset('tips')
-mpl_fig = sns.barplot(x='day', y='total_bill', data=tips)
 
 # Create an experiment run
 er = erm.ExperimentRun(
@@ -32,19 +39,13 @@ er.log_metric("rmse", "0.9")
 er.log_figure(mpl_fig, "ROC Curve")
 er.log_text("lorem ipsum...", "text")
 
-# Generate HTML
+# Display the report (if you are in a notebook)
 html = erm.compare_runs(er)
 display(HTML(html))
 
-# Save the run to access later
+# Save to registry
 saved_path = erm.save_run_to_registry(er, "s3:///erm-registry")
 
-# Load a previous run
-er2 = erm.load_run_from_path(saved_path)
-
-# Compare the current run with a previous one
-html = erm.compare_runs(er, er2)
-display(HTML(html))
 ```
 
 ## Screenshots
