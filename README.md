@@ -1,18 +1,19 @@
-# ERM: Experiment Results Manager
+# 🔬 ERM: Experiment Results Manager
 
 Light-weight alternative to `mlflow` experiment tracking that doesn't require kubernetes. Useful tool to compare metrics between training attempts in your model training workflow
 
-### Features
+### ✨ Features
 
-- Track plots, metrics, & other data
-- Experiment registry (supports S3, GCS, Azure and others via fsspec)
-- Comparison view 
+- 📈 Track plots, metrics, & other data
+- 💾 Experiment registry 
+- ⛅️ Supports S3, GCS, Azure and others (via `fsspec`)
+- 👀 Comparison view 
 
-## Examples
+## 🚀 Examples
 - Quick and easy: [serialize_and_deserialize.ipynb](examples/serialize_and_deserialize.ipynb)
 - Practical but more involved: [compare_runs.ipynb](examples/compare_runs.ipynb)
 
-## Get Started
+## ✅ Get Started
 ### Installation
 ```sh
 
