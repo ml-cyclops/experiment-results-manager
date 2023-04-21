@@ -1,5 +1,5 @@
 import base64
-from typing import Any, Dict, List, Set
+from typing import Any, Dict, List, Set, Tuple
 
 import plotly.io
 from plotly.offline import get_plotlyjs
@@ -8,6 +8,7 @@ from experiment_results_manager.artifact import ArtifactType
 from experiment_results_manager.experiment_run import ExperimentRun
 from experiment_results_manager.html_util import (
     dicts_to_html_table,
+    human_readable_bytes,
     timestamps_to_html_table,
 )
 
@@ -42,11 +43,25 @@ def compare_runs(*runs: ExperimentRun, **kwargs: Dict[str, Any]) -> str:
         [er.run_id for er in runs],
         [er.timestamp_utc for er in runs],
     )
-    html += "<h2>Params</h2>"
-    html += dicts_to_html_table([er.params for er in runs])
-    html += "<h2>Metrics</h2>"
-    html += dicts_to_html_table([er.metrics for er in runs])
-    html += "<h2>Artifacts</h2>"
+    html += dicts_to_html_table("Params", [er.params for er in runs])
+    html += dicts_to_html_table(
+        "Features",
+        [_feature_list_to_dict(er) for er in runs],
+    )
+    html += dicts_to_html_table("Metrics", [er.metrics for er in runs])
+
+    dict_keys_set: Set[str] = set()
+    for er in runs:
+        dict_keys_set.update(er.dicts.keys())
+    dict_keys: List[str] = list(dict_keys_set)
+    dict_keys.sort()
+
+    for dict_key in dict_keys:
+        html += dicts_to_html_table(
+            dict_key,
+            [er.dicts[dict_key] if dict_key in er.dicts else {} for er in runs],
+        )
+    html += "<h3>Artifacts</h3>"
 
     artifact_keys_set: Set[str] = set()
     for er in runs:
@@ -54,29 +69,14 @@ def compare_runs(*runs: ExperimentRun, **kwargs: Dict[str, Any]) -> str:
     artifact_keys: List[str] = list(artifact_keys_set)
     artifact_keys.sort()
 
-    add_plotlyjs_to_html = False
+    add_plotlyjs_to_html: bool = False
     for k in artifact_keys:
         html += f"<h3>{k}</h3>"
         for i, run in enumerate(runs):
             if k in run.artifacts:
-                html += f"<h4>Run {i+1}</h4>"
-                artifact = run.artifacts[k]
-                if artifact.artifact_type == ArtifactType.PLOTLY_JSON:
-                    render_pl_fig = plotly.io.from_json(artifact.bytes.decode("utf-8"))
-                    add_plotlyjs_to_html = True
-                    html += render_pl_fig.to_html(
-                        full_html=False, include_plotlyjs=False
-                    )
-                elif artifact.artifact_type == ArtifactType.PNG:
-                    b64_img = base64.b64encode(artifact.bytes)
-                    html += '<img src="data:image/png;base64,'
-                    html += b64_img.decode("utf-8")
-                    html += '">'
-                elif artifact.artifact_type == ArtifactType.JPG:
-                    b64_img = base64.b64encode(artifact.bytes)
-                    html += '<img src="data:image/jpg;base64,'
-                    html += b64_img.decode("utf-8")
-                    html += '">'
+                artifact_html, add_plotlyjs_to_html_tmp = render_artifact(k, i, run)
+                add_plotlyjs_to_html = add_plotlyjs_to_html or add_plotlyjs_to_html_tmp
+                html += artifact_html
 
     if add_plotlyjs_to_html:
         _window_plotly_config = """\
@@ -93,3 +93,34 @@ def compare_runs(*runs: ExperimentRun, **kwargs: Dict[str, Any]) -> str:
 
     html = "<html><body>" + html + "</body></html>"
     return html
+
+
+def _feature_list_to_dict(er: ExperimentRun) -> Dict[str, Any]:
+    return dict([(str(i + 1), f) for i, f in enumerate(er.features)])
+
+
+def render_artifact(k: str, i: int, run: ExperimentRun) -> Tuple[str, bool]:
+    add_plotlyjs_to_html = False
+    html = f"<h4>Run {i+1}</h4>"
+    artifact = run.artifacts[k]
+    if artifact.artifact_type == ArtifactType.PLOTLY_JSON:
+        render_pl_fig = plotly.io.from_json(artifact.bytes.decode("utf-8"))
+        add_plotlyjs_to_html = True
+        html += render_pl_fig.to_html(full_html=False, include_plotlyjs=False)
+    elif artifact.artifact_type == ArtifactType.PNG:
+        b64_img = base64.b64encode(artifact.bytes)
+        html += '<img src="data:image/png;base64,'
+        html += b64_img.decode("utf-8")
+        html += '">'
+    elif artifact.artifact_type == ArtifactType.JPG:
+        b64_img = base64.b64encode(artifact.bytes)
+        html += '<img src="data:image/jpg;base64,'
+        html += b64_img.decode("utf-8")
+        html += '">'
+    elif artifact.artifact_type == ArtifactType.BINARY:
+        html += (
+            f"<pre><code>Filename: {artifact.filename}\n"
+            f"Size: {human_readable_bytes(len(artifact.bytes))}</pre></code>"
+        )
+
+    return html, add_plotlyjs_to_html

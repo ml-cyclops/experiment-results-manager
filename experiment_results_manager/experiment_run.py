@@ -1,6 +1,6 @@
 import os
 from datetime import datetime
-from typing import Any, Dict, Optional, Union
+from typing import Any, Dict, List, Optional, Union
 
 import matplotlib.axes
 import matplotlib.figure
@@ -56,6 +56,7 @@ class ExperimentRun:
         variant_id: str = "main",
         run_id: Optional[str] = None,
         timestamp_utc: Optional[datetime] = None,
+        features: Optional[List[str]] = None,
         params: Optional[Dict[str, Union[str, int, float]]] = None,
         metrics: Optional[Dict[str, Union[str, int, float]]] = None,
         dicts: Optional[Dict[str, Dict[str, Any]]] = None,
@@ -68,24 +69,24 @@ class ExperimentRun:
         is generated from the `timestamp_utc` using the format "%Y_%m_%d__%H_%M_%S".
         """
 
-        if timestamp_utc is None:
-            self.timestamp_utc = datetime.utcnow()
-        else:
-            self.timestamp_utc = timestamp_utc
-
+        self.experiment_id = experiment_id
+        self.variant_id = variant_id
+        self.timestamp_utc = (
+            timestamp_utc if timestamp_utc is not None else datetime.utcnow()
+        )
         if run_id is None:
             self.run_id = self.timestamp_utc.strftime("%Y_%m_%d__%H_%M_%S")
         else:
             self.run_id = run_id
 
-        self.variant_id = variant_id
-        self.experiment_id = experiment_id
+        self.features: List[str] = features if features is not None else []
         self.params: Dict[str, Union[str, int, float]] = (
             params if params is not None else {}
         )
         self.metrics: Dict[str, Union[str, int, float]] = (
             metrics if metrics is not None else {}
         )
+
         self.dicts: Dict[str, Dict[str, Any]] = dicts if dicts is not None else {}
         self.artifacts: Dict[str, Artifact] = artifacts if artifacts is not None else {}
 
