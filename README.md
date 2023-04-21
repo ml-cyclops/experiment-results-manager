@@ -49,6 +49,10 @@ html = erm.compare_runs(er)
 display(HTML(html))
 
 # Save to registry
-saved_path = erm.save_run_to_registry(er, "s3:///erm-registry")
+saved_path = erm.save_run_to_registry(er, "s3://erm-registry")
 
 ```
+<hr>
+<p align="center" style="text-align: center; color: gray; font-size: 10px;">
+Made with ❤️ in Berlin
+</p>
