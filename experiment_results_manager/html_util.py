@@ -6,13 +6,19 @@ import matplotlib.axes
 import matplotlib.figure
 
 
-def dicts_to_html_table(dict_name: str, data: List[Dict[str, Any]]) -> str:
+def dicts_to_html_table(
+    dict_name: str, data: List[Dict[str, Any]], sort_keys: Union[bool, List[str]] = True
+) -> str:
     # Get all the unique keys from all the dictionaries
-    keys: Set[str] = set()
-    for d in data:
-        keys.update(d.keys())
-    keys_list = list(keys)
-    keys_list.sort()
+    if type(sort_keys) == list:
+        keys_list = sort_keys
+    else:
+        keys: Set[str] = set()
+        for d in data:
+            keys.update(d.keys())
+        keys_list = list(keys)
+        if type(sort_keys) == bool and sort_keys:
+            keys_list.sort()
 
     if len(keys_list) == 0:
         return ""

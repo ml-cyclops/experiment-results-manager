@@ -9,7 +9,6 @@ from experiment_results_manager.experiment_run import ExperimentRun
 from experiment_results_manager.html_util import (
     dicts_to_html_table,
     human_readable_bytes,
-    timestamps_to_html_table,
 )
 
 
@@ -37,11 +36,18 @@ def compare_runs(*runs: ExperimentRun, **kwargs: Dict[str, Any]) -> str:
             "dy{font-family:monospace;font-weight:400}</style>"
         )
 
-    html += timestamps_to_html_table(
-        [er.experiment_id for er in runs],
-        [er.variant_id for er in runs],
-        [er.run_id for er in runs],
-        [er.timestamp_utc for er in runs],
+    html += dicts_to_html_table(
+        "Metadata",
+        [
+            {
+                "Experiment id": er.experiment_id,
+                "Variant id": er.variant_id,
+                "Run id": er.run_id,
+                "Timestamp (UTC)": er.timestamp_utc.strftime("%Y-%m-%d %H:%M:%S"),
+            }
+            for er in runs
+        ],
+        sort_keys=["Experiment id", "Variant id", "Run id", "Timestamp (UTC)"],
     )
     html += dicts_to_html_table("Params", [er.params for er in runs])
     html += dicts_to_html_table(

@@ -1,3 +1,8 @@
+---
+hide:
+  - navigation
+---
+
 # 🔬 ERM: Experiment Results Manager
 
 Light-weight alternative to `mlflow` experiment tracking that doesn't require kubernetes. Useful tool to compare metrics between training attempts in your model training workflow
@@ -10,13 +15,10 @@ Light-weight alternative to `mlflow` experiment tracking that doesn't require ku
 - ⛅️ Supports S3, GCS, Azure and others (via `fsspec`)
 
 ## 🚀 Examples & Demos
-- Quick and easy: [serialize_and_deserialize.ipynb](examples/serialize_and_deserialize.ipynb)
-- Practical but more involved: [compare_runs.ipynb](examples/compare_runs.ipynb)
-- Browse the registry: [browse_registry.ipynb](examples/browse_registry.ipynb)
+- Quick and easy: [serialize_and_deserialize.ipynb](https://github.com/ml-cyclops/experiment-results-manager/blob/main/examples/serialize_and_deserialize.ipynb)
+- Practical but more involved: [compare_runs.ipynb](https://github.com/ml-cyclops/experiment-results-manager/blob/main/examples/compare_runs.ipynb)
+- Browse the registry: [browse_registry.ipynb](https://github.com/ml-cyclops/experiment-results-manager/blob/main/examples/browse_registry.ipynb)
 
-<p align="center">
-<img src="https://user-images.githubusercontent.com/1297369/233723764-c52cf948-ec4d-4b94-916d-77cadababae8.png" height="400">
-</p>
 
 ## ✅ Get Started
 #### Installation

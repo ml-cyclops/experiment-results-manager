@@ -1,5 +1,10 @@
 from experiment_results_manager.compare_runs import compare_runs
 from experiment_results_manager.experiment_run import ExperimentRun
+from experiment_results_manager.registry import (
+    list_experiments,
+    list_runs,
+    list_variants,
+)
 from experiment_results_manager.serde import (
     load_run_from_path,
     load_run_from_registry,
@@ -14,4 +19,7 @@ __all__ = [
     "save_run_to_registry",
     "load_run_from_path",
     "load_run_from_registry",
+    "list_experiments",
+    "list_variants",
+    "list_runs",
 ]

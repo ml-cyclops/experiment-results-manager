@@ -15,12 +15,6 @@ class ExperimentRun:
     Example usage:
     ```python
     import experiment_results_manager as erm
-    from IPython.display import display, HTML
-    import seaborn as sns
-
-    # Creating arbitrary plot to log later
-    tips = sns.load_dataset('tips')
-    mpl_fig = sns.barplot(x='day', y='total_bill', data=tips)
 
     # Create an experiment run
     er = erm.ExperimentRun(
@@ -33,20 +27,20 @@ class ExperimentRun:
     er.log_metric("rmse", "0.9")
     er.log_figure(mpl_fig, "ROC Curve")
     er.log_text("lorem ipsum...", "text")
+    er.log_artifact(
+        pickle.dumps(model),
+        artifact_id="model",
+        filename="model.pickle"
+    )
 
-    # Generate HTML
+    # Display the run
     html = erm.compare_runs(er)
+    # Or compare side by side with other runs
+    html = erm.compare_runs(er, er2, er3)
     display(HTML(html))
 
     # Save the run to access later
-    saved_path = erm.save_run_to_registry(er, "s3:///erm-registry")
-
-    # Load a previous run
-    er2 = erm.load_run_from_path(saved_path)
-
-    # Compare the current run with a previous one
-    html = erm.compare_runs(er, er2)
-    display(HTML(html))
+    saved_path = erm.save_run_to_registry(er, "s3://erm-registry")
     ```
     """
 
