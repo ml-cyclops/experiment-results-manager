@@ -1,0 +1,10 @@
+:root {
+    --md-primary-fg-color: #aba93f;
+    --md-primary-fg-color--light: #ebe96f;
+    --md-primary-fg-color--dark: #6d6c28;
+}
+
+.doc-function-name {
+    font-family: 'Courier New', Courier, monospace;
+    font-weight: bold;
+}

@@ -14,3 +14,7 @@ fmt:
 .PHONY: install_python
 install_python:
 	CONFIGURE_OPTS=--enable-shared pyenv install $$(cat .python_version | tr -d '\n')
+
+.PHONY: docs
+docs:
+	poetry run mkdocs serve
