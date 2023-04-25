@@ -28,6 +28,8 @@ theme:
     - navigation.tracking
     - navigation.tabs
 
+repo_url: https://github.com/ml-cyclops/experiment-results-manager
+
 plugins:
 - search
 - mkdocstrings:
