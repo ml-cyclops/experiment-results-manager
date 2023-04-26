@@ -2,7 +2,7 @@
 
 [![docs](https://img.shields.io/badge/docs-latest-brightgreen)](https://ml-cyclops.github.io/experiment-results-manager/)
 
-Light-weight alternative to `mlflow` experiment tracking that doesn't require kubernetes. Useful tool to compare metrics between training attempts in your model training workflow
+Light-weight alternative to `mlflow` experiment tracking that doesn't require a webserver. Useful tool to compare metrics between training attempts in your model training workflow
 
 ## ✨ Features
 
