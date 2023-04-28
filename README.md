@@ -1,6 +1,6 @@
 # 🔬 ERM: Experiment Results Manager
 
-[![docs](https://img.shields.io/badge/docs-latest-brightgreen)](https://ml-cyclops.github.io/experiment-results-manager/)
+[![docs](https://img.shields.io/badge/docs-latest-blue)](https://ml-cyclops.github.io/experiment-results-manager/)
 
 Light-weight alternative to `mlflow` experiment tracking that doesn't require a webserver. Useful tool to compare metrics between training attempts in your model training workflow
 
@@ -15,10 +15,6 @@ Light-weight alternative to `mlflow` experiment tracking that doesn't require a 
 - Quick and easy: [serialize_and_deserialize.ipynb](examples/serialize_and_deserialize.ipynb)
 - Practical but more involved: [compare_runs.ipynb](examples/compare_runs.ipynb)
 - Browse the registry: [browse_registry.ipynb](examples/browse_registry.ipynb)
-
-<p align="center">
-<img src="https://user-images.githubusercontent.com/1297369/233723764-c52cf948-ec4d-4b94-916d-77cadababae8.png" height="400">
-</p>
 
 ## ✅ Get Started
 #### Installation
